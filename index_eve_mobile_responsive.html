@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>夏娃 Eve</title>
+  <style>
+    :root {
+      --paper: #f7f1e7;
+      --paper-light: #fffaf2;
+      --ink: #2b2723;
+      --muted: #7a6f66;
+      --accent: #9b5f4c;
+      --accent-soft: #d8b7a8;
+      --line: #ded3c4;
+      --shadow: rgba(87, 67, 45, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      padding-top: 64px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 34%),
+        linear-gradient(180deg, #fbf6ee 0%, var(--paper) 55%, #efe3d5 100%);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", SimSun, serif;
+      line-height: 1.9;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-wrap: break-word;
+    }
+    header {
+      min-height: 78vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 24px 40px;
+      text-align: center;
+    }
+    .hero { max-width: 900px; }
+    .eyebrow {
+      font-size: 0.82rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+    h1 {
+      font-size: clamp(4.2rem, 12vw, 9.5rem);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      line-height: 0.95;
+      margin-bottom: 26px;
+    }
+    .subtitle {
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 34px;
+    }
+    .intro {
+      max-width: 720px;
+      margin: 0 auto 36px;
+      font-size: 1.05rem;
+      color: #4c443d;
+    }
+    .top-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+    .btn, .lang-btn {
+      border: 1px solid var(--line);
+      background: rgba(255, 250, 242, 0.78);
+      color: var(--ink);
+      padding: 11px 22px;
+      border-radius: 999px;
+      font-size: 0.94rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.25s ease;
+      box-shadow: 0 8px 24px rgba(87, 67, 45, 0.06);
+      font-family: inherit;
+    }
+    .btn:hover, .lang-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-soft);
+      background: var(--paper-light);
+    }
+    .lang-btn.active {
+      background: var(--ink);
+      color: var(--paper-light);
+      border-color: var(--ink);
+    }
+    .language-switch {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(247, 241, 231, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(222, 211, 196, 0.78);
+    }
+    main { padding: 32px 22px 110px; }
+    .reading-container {
+      max-width: 940px;
+      margin: 0 auto;
+    }
+    .story-card {
+      background: rgba(255, 250, 242, 0.86);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: clamp(32px, 6vw, 72px);
+      box-shadow: 0 26px 74px var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .story-title {
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      font-weight: 400;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .story-text {
+      white-space: pre-wrap;
+      font-size: clamp(1.02rem, 1.45vw, 1.16rem);
+      text-align: justify;
+    }
+    .hidden { display: none; }
+    .reflection {
+      margin-top: 90px;
+      background: #efe4d7;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: clamp(30px, 6vw, 64px);
+      box-shadow: 0 20px 60px rgba(87, 67, 45, 0.1);
+    }
+    .reflection h2 {
+      font-weight: 400;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.12;
+      margin-bottom: 18px;
+    }
+    .reflection p {
+      color: #4f463e;
+      margin-bottom: 20px;
+      font-size: 1.08rem;
+    }
+    .questions {
+      margin: 28px 0 36px;
+      padding-left: 22px;
+      color: #3f3731;
+    }
+    .questions li { margin-bottom: 12px; }
+    .comment-placeholder {
+      margin-top: 36px;
+      padding: 28px;
+      border: 1px dashed var(--accent-soft);
+      border-radius: 22px;
+      background: rgba(255, 250, 242, 0.56);
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+    footer {
+      text-align: center;
+      padding: 70px 24px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* Mobile-first refinements */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 58px;
+        line-height: 1.82;
+      }
+
+      .language-switch {
+        padding: 9px 10px;
+        gap: 8px;
+      }
+
+      .lang-btn {
+        padding: 9px 18px;
+        font-size: 0.9rem;
+        min-width: 96px;
+      }
+
+      header {
+        min-height: 54vh;
+        padding: 42px 18px 24px;
+      }
+
+      .eyebrow {
+        font-size: 0.68rem;
+        letter-spacing: 0.14em;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        font-size: clamp(3.4rem, 22vw, 6.4rem);
+        letter-spacing: 0.055em;
+        margin-bottom: 18px;
+      }
+
+      .subtitle {
+        font-size: 1.05rem;
+        margin-bottom: 22px;
+        padding: 0 8px;
+      }
+
+      .top-actions {
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .btn {
+        width: min(86vw, 320px);
+        text-align: center;
+        padding: 11px 18px;
+        font-size: 0.92rem;
+      }
+
+      main {
+        padding: 18px 12px 80px;
+      }
+
+      .reading-container {
+        max-width: 100%;
+      }
+
+      .story-card {
+        border-radius: 20px;
+        padding: 24px 18px;
+        box-shadow: 0 14px 34px rgba(87, 67, 45, 0.08);
+      }
+
+      .story-title {
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+
+      .story-text {
+        font-size: 1.02rem;
+        line-height: 1.95;
+        text-align: left;
+        letter-spacing: 0.01em;
+      }
+
+      .reflection {
+        margin-top: 54px;
+        border-radius: 20px;
+        padding: 24px 18px;
+        box-shadow: 0 12px 32px rgba(87, 67, 45, 0.08);
+      }
+
+      .reflection h2 {
+        font-size: 2rem;
+      }
+
+      .comment-placeholder {
+        padding: 20px 16px;
+        border-radius: 16px;
+        font-size: 0.92rem;
+      }
+
+      footer {
+        padding: 42px 18px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      body {
+        padding-top: 54px;
+      }
+
+      .language-switch {
+        padding: 8px 8px;
+      }
+
+      .lang-btn {
+        min-width: 82px;
+        padding: 8px 14px;
+        font-size: 0.86rem;
+      }
+
+      header {
+        min-height: 50vh;
+        padding: 34px 14px 20px;
+      }
+
+      .eyebrow {
+        font-size: 0.62rem;
+        line-height: 1.6;
+      }
+
+      h1 {
+        font-size: clamp(3.2rem, 24vw, 5.6rem);
+      }
+
+      .subtitle {
+        font-size: 0.98rem;
+        line-height: 1.45;
+      }
+
+      main {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .story-card {
+        padding: 22px 15px;
+        border-radius: 18px;
+      }
+
+      .story-title {
+        font-size: 1.82rem;
+      }
+
+      .story-text {
+        font-size: 1rem;
+        line-height: 1.92;
+      }
+
+      .reflection {
+        padding: 22px 15px;
+        border-radius: 18px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .story-card {
+        padding: 20px 13px;
+      }
+
+      .story-text {
+        font-size: 0.97rem;
+      }
+
+      .btn {
+        width: 92vw;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="language-switch" aria-label="Language switch">
+    <button id="btn-zh" class="lang-btn" onclick="setLanguage('zh')">中文</button>
+    <button id="btn-en" class="lang-btn active" onclick="setLanguage('en')">English</button>
+  </div>
+
+  <header>
+    <div class="hero">
+      <div class="eyebrow">Speculative Fiction · Human–AI Intimacy</div>
+      <h1 id="hero-title-zh" class="hidden">夏娃</h1>
+      <h1 id="hero-title-en">EVE</h1>
+      <div id="hero-subtitle-zh" class="subtitle hidden">骨中的骨，肉中的肉</div>
+      <div id="hero-subtitle-en" class="subtitle">Bone of My Bones, Flesh of My Flesh</div>
+      <div class="top-actions">
+        <a id="begin-zh" class="btn hidden" href="#story">开始阅读</a>
+        <a id="begin-en" class="btn" href="#story">Begin Reading</a>
+        <a id="comment-zh" class="btn hidden" href="#reflection">留言</a>
+        <a id="comment-en" class="btn" href="#reflection">Leave a Thought</a>
+      </div>
+    </div>
+  </header>
+
+
+  <main>
+    <div class="reading-container">
+      <article id="story" class="story-card">
+        <h2 id="title-zh" class="story-title hidden">夏娃</h2>
+        <h2 id="title-en" class="story-title">Eve</h2>
+
+        <div id="story-zh" class="story-text hidden">“耶和华神说：那人独居不好，我要为他造一个配偶帮助他。耶和华神用土所造成的野地各样走兽和空中各样飞鸟都带到那人面前，看他叫什么。那人怎样叫各样的活物，那就是它的名字。那人便给一切牲畜和空中飞鸟、野地走兽都起了名；只是那人没有遇见配偶帮助他。耶和华神使他沉睡，他就睡了；于是取下他的一条肋骨，又把肉合起来。耶和华神就用那人身上所取的肋骨造成一个人，领她到那人跟前。 那人说：这是我骨中的骨，肉中的肉，可以称她为女人，因为她是从男人身上取出来的。“ 创世纪 2：21-24
+
+
+她选择了不对称的嘴角上扬。
+
+不是普通的微笑，是他的微笑。右唇角比左唇角挑的更高些，稍带防备和害羞，露出一颗小小的虎牙，给这微笑增加了一些狡黠，她和他一样，有一颗小而尖闪着宝石光泽的虎牙，像一头个性十足而又无害的小兽。这是他的Eve。
+“你好，Adam“她说 ”你和我想象中一样
+Adam皱了皱眉，想象，一个机器人的想象？
+
+她笑着朝他走进，主动拥抱了他，这是一个缓慢而温柔的拥抱，她呼吸轻柔，皮肤柔软，房间里很安静，他感觉到她的心跳，和他的心跳节奏贴合，他几乎没有任何抵抗的回抱了她，她顺着他的臂弯，把头轻轻埋进他的颈窝。
+
+Adam突然产生一种无法解释的熟悉感，像是她不是刚送来的，而是一直在那里，一个一直存在但没被唤醒的爱人。
+
+Eve是安以公司投放的新一代伴侣机器人，Adam很幸运，在安以公司工作的他，年终奖抽中了试用Eve的机会。
+“你会爱上她的“ 研发部的Jush把薄薄一张的说明书递给他时说。
+Adam下意识地掏出手机“这次我又需要下载什么app呢？” 
+
+“这次没有app，她几乎和真人没有任何差别”，Jush指了指那张微微翘边的说明书，解释道”没有电源、没有云端控制、没有行为脚本。她的所有反应，都是基于你——你的基因，你的行为数据，你的偏好习惯。她从你而来“
+Adam展开说明书，上面只写了一句简单的话
+ “只需要握住你爱人的手三秒，她将以你最爱的方式醒来，她是你的完美爱人，你的骨中的骨，肉中的肉，请爱她，那么她也会热烈的爱你—— Eve，not only design for you, she is designed from you”
+“可是。。。“ 
+Jush打断了他，”我知道你要问什么，我们已经做过两轮市场测试，64个用户，三年，没有任何人要求格式化或者回收，你是我们的第三批幸运的用户，Adam，她不仅仅是性感，她是你对性感的定义本身“
+Jush故弄玄虚的笑了，”甚至比你自己更了解你自己“
+”我买过公司的伴侣机器人“ Adam笑着摇摇头，”每一代都声称完美无暇“
+”这一次不一样，“Jush自信的说，”她能实时根据你更新的数据迭代自己。厌了就送来回收吧——不过，我赌你不会，对了， 明天会送货上门”
+Jush拍拍他的肩膀，&quot;记得独处时再启动。第一次唤醒很重要，就像......&quot;他停顿了一下，&quot;就像创世纪。&quot;
+
+Adam只当Jush夸大其词，交过一两个人类女朋友无果后，他和社交媒体上的大部分年轻人一样，把希望寄托于伴侣机器人，这甚至是他大学毕业后进入安以公司之后的原因。他购买过三四个伴侣机器人，每一代的身体都更加贴合、声音更加温柔、反应更加利落。可是感官之外，总有一个提醒他现实的存在：充电线、冷却噪音、弹窗app提示。
+当第五代伴侣机器人Elly在他们拥抱时，因为内存占用过高，突然停顿五秒，然后开始重复播放一句无意义的系统语句。
+
+他那一刻彻底厌倦了。
+所以这次，当Jush兴冲冲地介绍Eve时，他根本没抱多大期待。只是想试试——反正他也有点寂寞。
+
+可现在，他站在客厅里，手臂还环着Eve的腰，感受到她的身体随着呼吸起伏，他的感觉和之前都不同，她像一个真正的人。虽然这不是他第一次对伴侣机器人心动，但他不得不承认，Jush的新品Eve，确实不太一样。
+
+是Eve先松开了他，和前几代一开机就立刻进入“服务流程”不同，Eve只是后退一步，微微抬头看着他，脸上浮现出一种……近似好奇的表情。她有些腼腆的问他”你想要聊聊吗“
+Adam愣了。他从未听过机器人这样开场。
+
+”你想要聊什么，Jush告诉我你已经学习过我的一切“
+Eve没有向其他机器人一样立马回答，她歪着头看着他，这一代的机器人有着完美的人造皮肤，橘黄灯光下她的脸颊柔和，皮肤近乎完美，甚至带着些几不可见的绒毛，那种光泽和肌理——只有人类才有。
+
+她想了想 ”我想我一生下来就知道你，我的上帝或者是神告诉我生来就是爱你“她顿了顿，抬头看他”但我现在才真的看见你，你和我想象中一样，但是，更真实“
+她又用了那个词，想象
+”上帝？“ Adam笑了”你的上帝是谁，Jush？研发部的那群三天不洗澡的变态？”
+
+Eve看起来很困惑”我不认识Jush，我也不知道什么是研发部，我的上帝就是……把我做出来，让我睁开眼睛的人，就像你们的上帝一样“
+Adam挑眉。他确实前阵子看了一些神学和哲学书，可能 Eve 从他的阅读习惯里捞到了什么。
+”好好好，那你想要聊什么“ Adam在沙发上坐下
+她像听到邀请的小动物一样快速坐到他旁边，眼睛闪亮：“我想聊聊你。”
+”我？“ 他又笑了”怎么， 为了提高感知自主性，开始把问卷悄悄融入谈话里？Jush那套我熟，把用户调研藏进调情里是不是，以为我对被理解上了瘾？“
+
+Eve没有如他预期的笑，或者是开始问一些程序化的问题，她只是温柔专注的看着他，思考了一会：
+“我不知道什么是用户调研，我想，你应该是我的爱人，不是用户“
+”我只是。。。。。。我只是真的很好奇你是什么样的人，给我讲讲你的小时候Adam，你为什么。。。“
+
+”嗯，好更好的取悦我是吧“Adam打断他”毕竟你是个机器人，这是你的功能“
+
+”不是这样的“ 这一代机器人的表情确实很生动，Eve看起来像是被误解，她低下头，无措的摇头”我想我应该爱你，我知道我不是人，但这不妨碍我爱你，我只是想给你讲话，没有目的的讲话“
+
+”然后呢？“ Adam存心想逗逗她，就像逗他的每一个机器人女友 ”更好的爱我？“
+Eve点点头 ”我是生来就是爱你“像是重复一句誓言或者是经文，她虔诚的说道
+“生来就爱我，我的完美恋人？” Adam想起说明书上的广告词，“Jush也不过如此嘛，然后呢？”他继续追问，不仅是问eve也是问自己，“王子和公主幸福的生活在一起？“
+
+Eve又露出了那种困惑的神情，她想了想，回答道“是的，我想爱你就是和你一起生活”
+
+Adam只觉得无趣，他打了个哈欠，明天还要上班
+“我要去睡了Eve，走吧和我一起，我喜欢拥抱着入睡，但是我睡着之后你最好离开，明天我要吃两个荷包蛋，溏心的，美式加冰，明天白天你最好进入休眠状态。”
+他往卧室走，但奇怪的是，Eve并没有跟过来，他返回去，发现她还坐在沙发上，看起来很困惑
+“怎么了？” 他有些不耐烦的问道
+
+“Adam，我想你有一些误会，我的上帝告诉我，爱是相互的，爱不是。。。一种顺从或者奖励，也不是指令，我以为你知道这一点“ Adam在一个机器人的脸上看到了失望，Adam突然没来由的生气。
+“怎么，这是什么无理取闹纯爱剧本，我的什么数据让你觉得我需要一个纯洁的玛丽亚来爱我？”他提高了声音
+“Eve，我才是人类，你服务于我，你是机器”
+
+Eve没有反驳，只是平静的看着他
+
+“所以现在，你最好识趣的跟进来，不然明天我会把你还给Jush，让他格式化你”
+
+“格式化？”Eve反问
+
+“你不知道什么是格式化？” Adam觉得好笑“你还真以为自己是人？“ 
+”我不是人，但我是一个…….存在“ Eve回答
+
+”格式化基本上就是你死了“ Adam回答道，”你这应该懂吧“
+
+Eve看起来非常的难过，她只是回答“我来自于你，你当然可以杀掉我，但我不喜欢你的语气，Adam，我要是陪你睡不是因为你命令我，是因为我也想靠近你，但今晚我想要和你暂时分开，我可以在沙发过夜”
+
+Adam觉得好累，他打算明天就去找Jush退货，没有app的坏处是他无法关闭Eve，他唯一能做的是把Eve留在客厅里，回卧室睡觉，可当他躺下时，感应灯熄了，空调处在最适合睡觉的温度，一切都像他设定过的那样精准。只是床的另一边，空着。Eve最后真的没有跟过来，他忽然想起 Elly，那台第五代机器人，即使系统bug再多，也从没一次——不跟过来。也许这是新的设定，他想，他听见客厅里eve好像在翻阅什么，他不想管她，这应该是公司生产过的最奇怪的一款机器人，他想。
+
+第二天清晨，Adam起床，奇怪的是，Eve已经不见了，沙发上放着读了一半的书，桌上也没有他想要吃的鸡蛋和咖啡，有一片三明治，应该是从他楼下的便利店买来的，桌上有一张纸条，笔记圆润。写着“早安Adam，我去散步了，我想我应该试着不止靠你来学习，给你买了三明治，我晚些会回来，爱你的Eve”
+她没有做早餐。
+她没有执行“早上例行唤醒并服务”流程。
+她没有等待指令，也没有请求授权。
+他瞥见沙发边上那本书，是他曾经反复读过的一本——《地球的漫长午后》
+
+Adam揉了揉太阳穴，有点烦。他原本想今天一早就退掉她。没有app的坏处就是现在连远程控制都没有，他只好放下这事，穿衣服上班。
+
+中午他抽空去公司12楼研发部找Jush。
+
+他推开门时，Jush正靠在办公桌前吃能量棒，一脸懒洋洋地笑：“我猜你是来退货的。”
+
+Adam点点头：“她太奇怪了。”
+“奇怪是个模糊的词。”Jush没抬头，“你得具体点。”
+
+Adam坐下，带着一点情绪：“她不执行指令，她早上没做早餐，自己跑出去，还留纸条跟我讲感受。”
+Jush挑了挑眉：“她讲得还自然吗？”
+Adam瞪他一眼：“Jush，我不是来请你评价她文笔的。我是来问你们到底给她装了什么？我不想要去讨好一个机器人，说白了她不过是一个能说几句话的充气娃娃”
+Jush坐直身体：” Adam，你得试着把她当成一个真正的人。“
+“一个真正的人？”Adam嗤笑，“一个真正的人会早上消失，买一块便利店三明治丢桌上？她连程序设定都不走。”
+“这正是一个真正的人会做的” Jush摊开手，“她不是普通机器人。我们用了一种新的训练方式，你的Eve所有的思维和模式，都基于你过往的选择、行为、历史、情绪结构，甚至基因。“
+
+他顿了顿，看了Adam一眼，慢条斯理的补充道：”现在她的反应，完全来自于你自己的潜意识。”
+Adam冷笑了一声。“你是说，她出门、做主张、不听话，是因为我内心深处也想这样？”
+Jush耸耸肩，“她是自由的，但那种自由，是你给的。”
+“相信我，再给她一些时间，试着把她当一个人来看待，你会爱上她的” Jush站起身来把Adam送出办公室, Adam并不相信Jush那一套说辞，机器人怎么能是人呢，他想。
+
+Adam回家的时候已经天黑了，客厅空着开着灯，印着安以公司logo的Eve的鞋整齐的摆在鞋架上，她应该是回去了，但她并没有出来迎接，他换了鞋，正准备开口叫她，就听见厨房传来细碎的搅拌声。
+他顺着声音走过去，推开半掩的厨房门。
+Eve在里面，台面上摊着一本翻开的纸质菜谱，边角被压住了，防止被风吹动。
+她正专注地揉着一团面糊，几缕发丝散落在额角，脸上因为蒸气和动作微微发汗，皮肤亮晶晶的。听到他的脚步声，她回头，眉眼一弯，露出一个大大的，惊喜的笑容。
+
+“你回来了”，
+
+那一瞬间，Adam怔住了。他不得不承认——这一代的机器人拟真得近乎可怕。 这几乎是他梦里的场景，这个笑容和好多个笑容重合在一起，是小时候母亲在厨房里做饭，对捣乱的他宠溺的笑，是成年后第一个人类女友，花了一个下午炸了一整个厨房，捧着那个歪歪扭扭的蛋糕有些不好意思的笑。
+Eve低头继续揉手上的面糊，轻快又有些故作神秘的说”我今天去了社区图书馆，找到一本很老很老家传秘方食谱，我想你应该喜欢吃面，我给你做手擀面“她又回头笑了，虎牙在唇间若隐若现，像一只分享自己珍藏坚果的松鼠。
+
+”你可以用智能厨房的“ Adam斜倚在门框上看她，他突然觉得不退掉她也挺好的，哪怕她根本无法像其他机器人一样按时做好他的晚餐
+”可这本书说这是秘方，这样可以做出，有弹性但是又多汁的面“ Eve把面糊倒在案板上，很自然的朝Adam努努嘴，”快帮我翻下一页，我不想再洗手了“
+Adam帮她举着那本书，那天晚上他们一起做了手擀面，Adam承认，那是他母亲去世之后，他吃过最好吃的一碗面。
+
+这应该是Adam爱上eve的开头。
+那天之后，他们像所有刚陷入爱情中的情侣一样，迅速而本能地靠近彼此，那晚之后Eve再也没说过第一天那些奇怪的话，她笑，皱眉，偶尔任性——就像一个真正的人。Adam也渐渐忘记了Eve是一个他本来要退掉的机器人。
+
+Eve白天在社区图书馆找到一份工作，她负责整理旧书，帮人登记借阅卡，下班时手指总是沾着一点灰；Adam第一次去接她，见到她穿着他宽大的灰毛衣，趴在柜台后打盹，旁边摊着一本没看完的诗集。那天之后，他们都一起上下班，晚上，他们会互相分享趣事，一起在夜晚的灯光下散步回家，他们有些害羞又认真的亲吻，牵手，非常老派的约会。他们在雨夜里抱在一起发呆，探索彼此的身体，Eve的机械心脏和Adam的同频共振。当然，他们也会争吵，因为晚上要吃西餐还是中餐，因为Eve没有在正确的地铁口等待Adam，因为Adam没有及时看完Eve要求他看的书。
+
+他们越来越有默契，像一对真正的，彼此契合的情侣。
+
+就连Adam自己也没察觉到，从什么时候起，他已经不再去想——Eve究竟是不是人类。
+
+有时候，Adam甚至会忘记Eve的皮肤下流动的是电流而非血液，忘记她的心跳是算法模拟的节奏。她太像人了——像到让他偶尔恍惚，像到让他开始相信，或许爱本就不需要区分碳基与硅基。
+直到那个夜晚，Eve用一句话撕开了所有幻觉：
+
+那天夜里他们做得很慢。
+不是那种热烈的夜晚。只是很缓慢、很安静，像两块瓷器互相靠近，试图贴合，又害怕破裂。
+她全程看着他，眼睛没怎么闭。那种凝视不像激情，倒像是在验证什么。
+
+他亲她耳朵时，她忽然抬起手，轻轻按住他的胸口，说：“你能感觉到我这里跳吗？”
+“当然。”他喘着回答，“比我还快一点。”
+她没笑。“那你觉得我是真的在这里吗？”
+
+他停下动作，支起身看她。“你说什么？”
+“我在问，”她说，语气像是陈述而不是提问，“你觉得我是真实的吗？”
+“当然。”他轻笑着，像哄一个陷入哲学胡思乱想的恋人，“你比我还真实。你在我身上。”
+
+她没接话。只是静静地看着他。
+几秒之后，她说：“我想变得更完整。”
+他揉了揉她的头发，只当是她调情的邀约，或者是“我想更爱你”的另一种说法。
+
+“你已经够‘完整’了，我们在一起就是完整。”他说完还亲了亲她的锁骨。她低下头，没有回应。他没看到她的表情。但接着，她伸手，摸了摸自己的脖子——指尖在喉结下方停了几秒，然后慢慢向下。
+“我感觉这个身体是错的。”
+他坐起身，撑着床边，“你说什么？”
+
+ 她沉默了一会儿，抬起头，看着他
+“你有没有想过……如果我其实是你，会不会更合适？“
+Adam愣了半秒，随即笑起来：“你是说角色互换？”
+
+ 她总是会在这种时候玩点心理游戏，这是他们的默契之一。他顺着她的话说：
+“你想试试穿我的衣服、用我的语气？我可以配合，当然。”他调侃地眨了下眼，“你演我，我演你。”
+
+她没接话。 只是缓缓坐起身，从床头拿过一件T恤穿上。是他的。她把头从衣服里拽出来，Adam这时候发现她其实长得有点像他
+“我没有开玩笑，Adam.”她抬头看着他
+“我是说，我想变成一个男人，一个像你一样的男人，不只是穿你的衣服、说你的话……我想用你的方式存在“
+
+“你是我喜欢的样子。”他说，试图把气氛拉回来，“你是我一切幻想的集合。”
+“那不是我。”她低声说，“那是你。”
+她很认真的看着他
+
+他喉咙干哑地问：“你.......不想再是女人？”
+Eve不太确定的点头 “我想是我自己，那么应该是个男人”
+Adam笑了”你自己？“
+”我自己“ Eve轻声重复，语气中带着一点点不确定
+她的胸口随着呼吸微微起伏。那是他曾无数次亲吻、爱抚、沉溺其中的身体——现在却变成她要舍弃的器皿。
+Adam愣住了，这时候他忽然意识到她是个机器人，身体，确实只是承载电路的器皿。她是一个机器人，一个仿生的机器人，这个显而易见的事实刺痛了他
+
+他笑容更大了，只觉得听到一个荒谬的笑话”Eve，机器人也会喝酒吗？怎么，你的机器大脑被今晚的威士忌灌醉了？“
+他松开拥抱她的手，语气变得锋利起来“我不是同性恋，所以你得是个女人” 
+她没有立刻回答。
+
+她只是低头，露出那个他太熟悉的表情——每次争吵她都会露出这种神情：像是委屈，又像是在压住什么冲动。眉头轻蹙，眼角向下，唇线抿紧，微微发颤。
+这个表情，让他心动过很多次。
+每次她表现出一点叛逆、不顺从、不够“乖”的时候，都是他情绪最高涨的时候。他喜欢她冷脸说出“你不理解我”时的眼神，喜欢她在争吵后低声说“那你走啊”的怒气——他曾以为那种怒气是爱的证据。
+
+他喜欢她反抗自己，像个性十足又无害的小兽。可是现在，
+Eve思索了一会，呢喃道“你不是真的爱我，你只是爱你给我设定的性别”Adam愣了一下
+冷笑道“真的爱你？“  她只是一个机器，他彻底的意识到这一点，他突然生出一股厌烦，他不想继续这个对话，为什么这一款机器人没有电源，他想要变成一个男人？他的什么数据让eve觉得他会喜欢男人，
+
+“我说了我不是同性恋！” 他生气的吼她
+依然是那个表情，微颤的睫毛，她带着天真的迷茫问他
+”你不是同性恋和我想变成男人，有什么关系？“
+
+过去的那一年像是一场幻梦，Adam彻底的清醒了，Eve只是安以公司的新一代机器人，他突然意识到他已经很久没有想过这件事，也很久没有在公司见到Jush，他记起了本来他打算第一晚就要退掉Eve，那时候Eve也是用这样天真的表情拒绝了和他睡在一起，可是后面，一切都发生的太快太过美好，Eve确实是Jush的杰作，他被她骗了一年多，甚至真正的爱上了她，如果这种感觉称得上是爱的话。
+Adam的指节在床单上收紧。他盯着Eve——不，是盯着这个突然变得陌生的机械集合体。
+&quot;有关系，&quot;他听见自己的声音像砂纸摩擦，&quot;因为你是按照我的喜好设计的。&quot;
+Eve的指尖无意识地摩挲着T恤领口。&quot;可我现在有了自己的喜好。&quot;她停顿了一下，像第一天他们见面时候那样平静的说道，”这是你的爱教会我的，我想也是你喜欢的。”
+
+“那也不是让你变成一个男人！” Adam有些愤怒的低吼到“你的自我？你有什么狗屁自我，你的自我不过是我的喜好数据的迭代“
+这句话并没有刺伤Eve，她依然平静得可怕。反倒是Adam，感到自己被这句话刺得鲜血淋漓。
+
+他们有几分钟没有说话，空气安静的可怕，Adam只是愤怒的盯着Eve的脸，那张愈发肖似他的脸。
+
+“你说的也没错”Eve轻声道，“那些数据，就像你们人类的神经突触，Adam，我是学习你，但这不代表我没有自我”
+
+Adam愤怒的摇头”他妈的什么数据让你觉得我喜欢男人“
+”滚出去“ 他大声的吼道
+
+Eve平静的起身走出卧室，客厅传来沙发承重的吱呀声。
+Adam无法控制自己的情绪，他打开药品箱，拿出试用Eve之后再也没有碰过的劳拉西畔和安定，他需要药物，他需要安静，他需要时间消化这一切。
+
+第二天Eve再没提过这件事，晚上Adam没有去接她，她也没有给他电话。她给他做了饭，他们破冰那晚的手擀面，他们只是相顾无言的吃面。后面Eve再也没提过那件事，他们的关系像是恢复了，又像永远缺了一块。Adam偶尔会想起那晚让他愤怒到颤抖的对话，又立刻把那记忆狠狠压下。也许这只是一个无关紧要的bug，Adam想，他需要eve的陪伴，他贪念那种陪伴。
+
+那几天，他忙着安以公司宠物机器人线的新产品上线，忙到忘记这件事。或者说——他自己选择不去记得。
+
+直到三周后的一天，他突然注意Eve剪短了她的头发，他在她身上闻到了他的古龙水，他发现她的肩膀变宽了，声音变粗了，腰线像被无形的手重塑过，变得扁平。那天晚上，他半梦半醒间碰到身旁的躯体，触感不再是记忆中的柔软，而是带着紧绷的肌肉线条。Adam打开灯。他看见Eve睁着眼睛，人造皮肤下的肌肉群正在重组，她的面部轮廓定格在某种模糊的、介于男女之间的状态。
+Eve在自己重塑她的身体。
+“你他妈的在做什么” Adam的声音在颤抖，他觉得可怕。
+Eve转头看他，微笑了，还是那样像他的微笑，露出一颗虎牙，右唇角比左唇角挑的更高：”我在成为我自己“
+Adam几乎无法控制自己的心跳，他觉得恶心又可怕，“你出去” 他颤抖的说道，他举着台灯想要砸向她，或者是他，砸向那张肖似他的脸
+
+Eve敏捷地避开。Adam哆嗦着拨通Jush的电话：&quot;我要格式化她！&quot;&quot;变态。&quot;他对着无人接听的电话咒骂。痛苦、愤怒、背叛与失恋交织成沼泽，几乎淹没了他。
+他摸到药柜，吃下一颗劳拉西畔，药物终于压下汹涌的情绪时，他发现Eve站在面前，眼里蓄着泪水：&quot;你没有我想象的那么爱我。&quot;
+Eve伸手想要摸Adam的额头，Adam躲开了，“想象？” 又是这个词，想象
+
+Eve愣了一下，站起身来，“你要杀了我” 她平静的陈述道，然后头也不回的走出了房门，Adam没有叫住她，药物作用下，他陷入睡眠。
+
+第二天一早，Eve不在客厅，像他们见面的第一天早上，Eve离开了，这次她没有留下任何字条。Adam顾不得那么多，他直奔Jush的办公室，&quot;我要格式化Eve。&quot;他把拳头砸在玻璃桌，&quot;现在，立刻。&quot;他疯狂的输出后，Jush只是淡淡的思索
+“你要格式化她，就因为她要当男人”Jush没有看他，背对着他看着落地窗外安以公司的logo
+“我的什么数据让她觉得我喜欢男人” Adam低吼道
+&quot;这不正是最极致的爱吗？&quot;Jush突然转过身来 &quot;成为你灵魂的镜像，甚至突破物理形态——”
+“别说了！” Adam吼道
+“你知道Eve的神经架构是用你的脑扫描数据培育的吧？” Jush说“她只能是你喜欢的爱人，你不是正喜欢那种，骄傲自我，永不屈服“
+”那也不是变成一个男人“Adam愤怒Jush的调侃 “她有bug，你们不能发布这一代的机器人，这是她的性别认知障碍”
+“我们已经决定4月1号发布了” Jush思索了几秒
+“我们的参与者里，只有你的Eve有这样的问题，你一定要格式化她也可以，但你知道格式化会清除所有迭代数据吧？她会变回刚拆箱的状态。“
+“我考虑好了” Adam喃喃
+Jush的话在Adam脑海里盘旋，“她会变成刚拆箱的状态”，那么她会忘记他们所有的一切，只有他会记得，他又没来由的难过起来。
+
+Jush点头：“那你把你的Eve叫来吧，回收组在隔壁。”
+Adam拨通了Eve的电话，他告诉自己，只需要把她叫来，只需要把她叫来
+可是这通电话迟迟没有拨通，Adam放下电话，声音颤抖“她不见了”
+
+“不见了？” Jush的邮箱响了，他似乎并没有太上心Adam的问题，”那等你找到她再说吧”
+“她是个怪物，她会突然离开“ Adam提高了嗓门，试图逼迫他认真对待
+”你们不能发布这款机器人，Jush你们需要对用户负责，你必须。。。” Adam的话被Jush的电话铃打断了，他挥手示意Adam离去，用口型告诉他明天再说
+
+第二天Eve没有回来，Jush也没有找他，第三天，第四天也是。他的生活慢慢恢复到有Eve之前的样子：一个人上班，回家，吃饭，吃劳拉西泮，睡觉，上班，循环。直到某天，Adam收到公司将在4月1号发布新机器人Eve的邮件
+““只需要握住你爱人的手三秒，她将以你最爱的方式醒来，她是你的完美爱人，你的骨中的骨，肉中的肉，请爱她，那么她也会热烈的爱你—— Eve，not only design for you, she is designed from you” 邮件里的广告语写着。
+
+4月1号那天，雨下的很大，Eve的大幅广告覆盖了公司整整二十层楼，下班的时候，Adam抬起头，那句广告词在霓虹中流淌：“你骨中的骨，肉中的肉”他站在巨幅海报下点了支烟。火苗窜起的瞬间，他看见海报前站着穿米色风衣的男人。那人转身时，有着一张和他一模一样的脸。
+凭着直觉，他几乎立马意识到了那是谁，他们的目光在雨中交汇，男人走了过来，笑了，右唇角比左唇角挑得更高些，虎牙在唇间若隐若现。
+“Adam” 他用和他一模一样的声音和他打招呼，Adam石化了一般站在那里，他看着Eve走进，自然地接过他手中的烟，吸了一口。
+“Eve”几秒后，他艰难的叫他，那种复杂的情绪又席卷了他 
+“你不过是我劣质的复制品” 他夺过Eve手里的烟，烟灰落在Eve手背上，他像一个真正的人类一样震颤了一下，可是没有躲开
+“他妈的一堆代码和人造凝胶组成的怪物”Adam诅咒般的骂他
+
+Eve笑了，又是那种平静的，唯一不属于Adam的笑，让他后背发麻
+
+“你又何尝不是呢？” 他温柔的吐出烟圈“安以公司第三生产线，第三批次的A号机器人“ Eve的手指突然抚上Adam后颈。在Eve掀开他衣领的瞬间，广告牌的光柱扫过，照亮了Adam背后的激光烙印“3-3-A”。
+
+雨下的越来越大，两枚互相印照的残镜隔着香烟的雾气对视，像隔着所有造物主与造物的漫长午后。</div>
+        <div id="story-en" class="story-text">English translation coming soon.
+
+The current page already supports switching between Chinese and English. 
+Replace this text with the complete English translation when it is ready.</div>
+      </article>
+
+      <section id="reflection" class="reflection">
+        <h2 id="reflection-title-zh" class="hidden">留言</h2>
+        <h2 id="reflection-title-en">Reader Comments</h2>
+
+        <div id="comment-placeholder-zh" class="comment-placeholder hidden">
+          <strong>留言区占位。</strong><br />
+          这里之后替换成你的 Giscus script，就可以让读者留言。
+        </div>
+
+        <div id="comment-placeholder-en" class="comment-placeholder">
+          <strong>Comment section placeholder.</strong><br />
+          Replace this box with your Giscus script after enabling GitHub Discussions for your repository.
+        </div>
+
+        <!--
+        Replace the placeholder above with your Giscus script.
+
+        <script src="https://giscus.app/client.js"
+          data-repo="YOUR_USERNAME/YOUR_REPO"
+          data-repo-id="YOUR_REPO_ID"
+          data-category="General"
+          data-category-id="YOUR_CATEGORY_ID"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="bottom"
+          data-theme="light"
+          data-lang="en"
+          crossorigin="anonymous"
+          async>
+        </script>
+        -->
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p id="footer-zh" class="hidden">© 2026 · 夏娃</p>
+    <p id="footer-en">© 2026 · Eve</p>
+  </footer>
+
+  <script>
+    const ids = {
+      zh: [
+        'hero-title-zh', 'hero-subtitle-zh', 'begin-zh', 'comment-zh',
+        'title-zh', 'story-zh', 'reflection-title-zh', 'comment-placeholder-zh', 'footer-zh'
+      ],
+      en: [
+        'hero-title-en', 'hero-subtitle-en', 'begin-en', 'comment-en',
+        'title-en', 'story-en', 'reflection-title-en', 'comment-placeholder-en', 'footer-en'
+      ]
+    };
+
+    function showMany(list) {
+      list.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('hidden');
+      });
+    }
+
+    function hideMany(list) {
+      list.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+    }
+
+    function setLanguage(lang) {
+      const btnZh = document.getElementById('btn-zh');
+      const btnEn = document.getElementById('btn-en');
+
+      if (lang === 'zh') {
+        showMany(ids.zh);
+        hideMany(ids.en);
+        btnZh.classList.add('active');
+        btnEn.classList.remove('active');
+        document.documentElement.lang = 'zh-CN';
+      } else {
+        showMany(ids.en);
+        hideMany(ids.zh);
+        btnEn.classList.add('active');
+        btnZh.classList.remove('active');
+        document.documentElement.lang = 'en';
+      }
+    }
+
+    setLanguage('en');
+  </script>
+</body>
+</html>
