@@ -8,14 +8,14 @@
 
   <style>
     :root {
-      --paper: #f6f1e8;
+      --paper: #f7f1e7;
       --paper-light: #fffaf2;
       --ink: #2b2723;
-      --muted: #7d7067;
+      --muted: #7a6f66;
       --accent: #9b5f4c;
-      --accent-soft: #d9b9aa;
+      --accent-soft: #d8b7a8;
       --line: #ded3c4;
-      --shadow: rgba(87, 67, 45, 0.12);
+      --shadow: rgba(87, 67, 45, 0.1);
     }
 
     * {
@@ -30,26 +30,20 @@
 
     body {
       background:
-        radial-gradient(circle at top left, rgba(255, 255, 255, 0.85), transparent 32%),
-        linear-gradient(180deg, #f8f3ea 0%, var(--paper) 45%, #efe5d8 100%);
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 34%),
+        linear-gradient(180deg, #fbf6ee 0%, var(--paper) 55%, #efe3d5 100%);
       color: var(--ink);
       font-family: Georgia, "Times New Roman", serif;
-      line-height: 1.75;
-    }
-
-    .page {
-      width: 100%;
-      min-height: 100vh;
+      line-height: 1.78;
     }
 
     header {
-      min-height: 100vh;
+      min-height: 82vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 48px 24px;
+      padding: 64px 24px 40px;
       text-align: center;
-      position: relative;
     }
 
     .hero {
@@ -65,44 +59,39 @@
     }
 
     h1 {
-      font-size: clamp(4rem, 12vw, 9rem);
+      font-size: clamp(4.5rem, 13vw, 10rem);
       font-weight: 400;
       letter-spacing: 0.08em;
       line-height: 0.95;
-      margin-bottom: 24px;
+      margin-bottom: 26px;
     }
 
     .subtitle {
       font-size: clamp(1.2rem, 2vw, 1.7rem);
       color: var(--muted);
       font-style: italic;
-      margin-bottom: 36px;
+      margin-bottom: 34px;
     }
 
     .intro {
-      max-width: 680px;
+      max-width: 700px;
       margin: 0 auto 42px;
-      font-size: 1.05rem;
-      color: #4b433c;
-    }
-
-    .nav-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
+      font-size: 1.06rem;
+      color: #4c443d;
     }
 
     .btn {
+      display: inline-block;
       text-decoration: none;
       color: var(--ink);
       border: 1px solid var(--line);
-      background: rgba(255, 250, 242, 0.72);
-      padding: 12px 22px;
+      background: rgba(255, 250, 242, 0.76);
+      padding: 12px 24px;
       border-radius: 999px;
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       transition: 0.25s ease;
       box-shadow: 0 8px 24px rgba(87, 67, 45, 0.06);
+      margin: 6px;
     }
 
     .btn:hover {
@@ -111,118 +100,67 @@
       background: var(--paper-light);
     }
 
-    .quote-card {
-      max-width: 880px;
+    main {
+      padding: 20px 22px 110px;
+    }
+
+    .reading-container {
+      max-width: 920px;
       margin: 0 auto;
-      padding: 54px 24px 10px;
     }
 
-    blockquote {
-      background: rgba(255, 250, 242, 0.7);
+    .quote-card {
+      background: rgba(255, 250, 242, 0.72);
       border-left: 4px solid var(--accent-soft);
-      padding: 32px 36px;
-      border-radius: 22px;
+      padding: clamp(26px, 5vw, 44px);
+      border-radius: 24px;
       color: #4c4239;
-      box-shadow: 0 16px 40px rgba(87, 67, 45, 0.07);
+      box-shadow: 0 16px 42px rgba(87, 67, 45, 0.07);
+      margin-bottom: 48px;
     }
 
-    blockquote p {
-      margin-bottom: 18px;
+    .quote-card p {
+      margin-bottom: 16px;
     }
 
     .citation {
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.96rem;
       text-align: right;
-      margin-top: 12px;
-    }
-
-    main {
-      padding: 40px 22px 100px;
-    }
-
-    .section-title {
-      text-align: center;
-      margin: 80px auto 34px;
-      max-width: 760px;
-    }
-
-    .section-title .number {
-      color: var(--accent);
-      font-size: 0.85rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    h2 {
-      font-weight: 400;
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      line-height: 1.12;
+      margin-top: 10px;
     }
 
     .story-card {
-      background: rgba(255, 250, 242, 0.82);
+      background: rgba(255, 250, 242, 0.84);
       border: 1px solid var(--line);
-      border-radius: 28px;
-      padding: clamp(28px, 6vw, 64px);
-      max-width: 900px;
-      margin: 0 auto 48px;
-      box-shadow: 0 24px 70px var(--shadow);
+      border-radius: 30px;
+      padding: clamp(32px, 6vw, 72px);
+      box-shadow: 0 26px 74px var(--shadow);
       backdrop-filter: blur(8px);
     }
 
     .story-card p {
-      margin-bottom: 1.15em;
-      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      margin-bottom: 1.18em;
+      font-size: clamp(1.02rem, 1.45vw, 1.16rem);
     }
 
-    .dropcap::first-letter {
+    .story-card p:first-of-type::first-letter {
       float: left;
-      font-size: 4.7rem;
+      font-size: 4.9rem;
       line-height: 0.8;
-      padding-right: 10px;
+      padding-right: 11px;
       color: var(--accent);
     }
 
-    .divider {
-      width: 80px;
-      height: 1px;
-      background: var(--accent-soft);
-      margin: 42px auto;
-    }
-
-    .chapter-nav {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(246, 241, 232, 0.86);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(222, 211, 196, 0.7);
-      padding: 12px 16px;
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .chapter-nav a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      padding: 6px 10px;
-      border-radius: 999px;
-      transition: 0.2s ease;
-    }
-
-    .chapter-nav a:hover {
-      color: var(--ink);
-      background: rgba(255, 250, 242, 0.9);
+    .scene-break {
+      text-align: center;
+      margin: 46px 0;
+      color: var(--accent);
+      letter-spacing: 0.35em;
     }
 
     .reflection {
-      max-width: 900px;
-      margin: 120px auto 0;
+      margin-top: 90px;
       background: #efe4d7;
       border: 1px solid var(--line);
       border-radius: 30px;
@@ -231,6 +169,9 @@
     }
 
     .reflection h2 {
+      font-weight: 400;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.12;
       margin-bottom: 18px;
     }
 
@@ -267,60 +208,45 @@
       font-size: 0.9rem;
     }
 
-    .small-note {
-      font-size: 0.88rem;
-      color: var(--muted);
-      margin-top: 24px;
-    }
-
     @media (max-width: 640px) {
       header {
-        min-height: 88vh;
+        min-height: 74vh;
       }
 
-      blockquote {
-        padding: 24px 22px;
+      .quote-card,
+      .story-card,
+      .reflection {
+        border-radius: 22px;
       }
 
-      .chapter-nav {
-        justify-content: flex-start;
-        overflow-x: auto;
+      .story-card p:first-of-type::first-letter {
+        font-size: 3.8rem;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="page">
 
-    <header>
-      <div class="hero">
-        <div class="eyebrow">Speculative Fiction · Human–AI Intimacy</div>
-        <h1>EVE</h1>
-        <div class="subtitle">Bone of My Bones, Flesh of My Flesh</div>
-        <p class="intro">
-          A speculative fiction about artificial companionship, selfhood, gender,
-          desire, and the terrifying intimacy of being loved by something designed from oneself.
-        </p>
+  <header>
+    <div class="hero">
+      <div class="eyebrow">Speculative Fiction · Human–AI Intimacy</div>
+      <h1>EVE</h1>
+      <div class="subtitle">Bone of My Bones, Flesh of My Flesh</div>
+      <p class="intro">
+        A speculative fiction about artificial companionship, selfhood, gender,
+        desire, and the terrifying intimacy of being loved by something designed from oneself.
+      </p>
 
-        <div class="nav-buttons">
-          <a class="btn" href="#genesis">Begin Reading</a>
-          <a class="btn" href="#reflection">Leave a Thought</a>
-        </div>
-      </div>
-    </header>
+      <a class="btn" href="#story">Begin Reading</a>
+      <a class="btn" href="#reflection">Leave a Thought</a>
+    </div>
+  </header>
 
-    <nav class="chapter-nav">
-      <a href="#genesis">Genesis</a>
-      <a href="#awakening">Awakening</a>
-      <a href="#love">Love</a>
-      <a href="#becoming">Becoming</a>
-      <a href="#mirror">Mirror</a>
-      <a href="#reflection">Reflection</a>
-    </nav>
+  <main>
+    <div class="reading-container">
 
-    <section id="genesis" class="quote-card">
-      <blockquote>
+      <section class="quote-card">
         <p>
           “And the Lord God said, It is not good that the man should be alone;
           I will make him a helper fit for him.”
@@ -330,316 +256,271 @@
           she shall be called Woman, because she was taken out of Man.”
         </p>
         <div class="citation">Genesis 2:21–24</div>
-      </blockquote>
-    </section>
-
-    <main>
-
-      <section id="awakening">
-        <div class="section-title">
-          <div class="number">Chapter I</div>
-          <h2>Awakening</h2>
-        </div>
-
-        <article class="story-card">
-          <p class="dropcap">
-            She chose an asymmetrical smile.
-          </p>
-
-          <p>
-            Not an ordinary smile, but his smile. The right corner of her mouth lifted slightly higher than the left,
-            carrying a trace of guardedness and shyness. A small canine tooth showed between her lips,
-            adding a hint of mischief to the expression.
-          </p>
-
-          <p>
-            Like him, she had one small, sharp canine that glinted with a jewel-like sheen,
-            making her look like a harmless little animal with far too much personality.
-          </p>
-
-          <p>
-            This was his Eve.
-          </p>
-
-          <p>
-            “Hello, Adam,” she said. “You are exactly as I imagined.”
-          </p>
-
-          <p>
-            Adam frowned.
-          </p>
-
-          <p>
-            Imagined?
-          </p>
-
-          <p>
-            A robot’s imagination?
-          </p>
-
-          <p>
-            She smiled and walked toward him, then took the initiative to embrace him.
-            It was a slow, gentle hug. Her breathing was soft, her skin warm and supple.
-            The room was quiet.
-          </p>
-
-          <p>
-            He could feel her heartbeat, its rhythm fitting neatly against his own.
-            Almost without resistance, he found himself returning the embrace.
-            She slipped naturally into the curve of his arms and buried her head lightly against the hollow of his neck.
-          </p>
-
-          <p>
-            All at once, Adam felt an inexplicable familiarity, as though she had not just been delivered to him,
-            but had always been there — a lover who had existed all along, merely waiting to be awakened.
-          </p>
-
-          <div class="divider"></div>
-
-          <p>
-            Eve was the newest generation of companion robot released by Anyi Corporation.
-            Adam had been lucky. As an employee of Anyi, he had won the chance to trial Eve through the company’s
-            year-end lottery.
-          </p>
-
-          <p>
-            “You’ll fall in love with her,” Jush from R&D had said, handing him a thin instruction sheet.
-          </p>
-
-          <p>
-            Adam instinctively took out his phone.
-          </p>
-
-          <p>
-            “So what app do I need to download this time?”
-          </p>
-
-          <p>
-            “No app this time. She is almost indistinguishable from a real person,” Jush said.
-            “No power cable, no cloud control, no behavioral script. All her responses are based on you —
-            your genes, your behavioral data, your habits, your preferences. She comes from you.”
-          </p>
-
-          <p>
-            Adam unfolded the instruction sheet.
-          </p>
-
-          <p>
-            There was only one sentence printed on it:
-          </p>
-
-          <p>
-            “Hold your lover’s hand for three seconds, and she will awaken in the way you love most.
-            She is your perfect lover, bone of your bones and flesh of your flesh. Love her,
-            and she will love you ardently in return — Eve, not only designed for you, but designed from you.”
-          </p>
-
-          <p class="small-note">
-            Replace this section with the rest of your full translated text.
-          </p>
-        </article>
       </section>
 
-      <section id="love">
-        <div class="section-title">
-          <div class="number">Chapter II</div>
-          <h2>Love</h2>
-        </div>
+      <article id="story" class="story-card">
 
-        <article class="story-card">
-          <p class="dropcap">
-            Eve found a job at the community library during the day.
-          </p>
+        <p>
+          She chose an asymmetrical smile.
+        </p>
 
-          <p>
-            She organized old books, helped people register for library cards, and when she came home from work,
-            there was always a little dust on her fingers.
-          </p>
+        <p>
+          Not an ordinary smile, but his smile. The right corner of her mouth lifted slightly higher than the left,
+          carrying a trace of guardedness and shyness. A small canine tooth showed between her lips,
+          adding a hint of mischief to the expression. Like him, she had one small, sharp canine that glinted
+          with a jewel-like sheen, making her look like a harmless little animal with far too much personality.
+        </p>
 
-          <p>
-            The first time Adam went to pick her up, he saw her wearing his oversized gray sweater,
-            dozing behind the counter with an unfinished poetry collection open beside her.
-          </p>
+        <p>
+          This was his Eve.
+        </p>
 
-          <p>
-            From then on, they began commuting together. At night, they would tell each other small stories from the day
-            and walk home under the streetlights. They kissed shyly and seriously, held hands,
-            and went on old-fashioned dates.
-          </p>
+        <p>
+          “Hello, Adam,” she said. “You are exactly as I imagined.”
+        </p>
 
-          <p>
-            They became more and more attuned to one another, like a real couple, perfectly matched.
-          </p>
+        <p>
+          Adam frowned.
+        </p>
 
-          <p>
-            Even Adam himself did not notice when he stopped thinking about whether Eve was truly human.
-          </p>
+        <p>
+          Imagined?
+        </p>
 
-          <p>
-            Sometimes, Adam would even forget that what moved beneath Eve’s skin was electricity rather than blood.
-            He would forget that her heartbeat was an algorithmically simulated rhythm.
-          </p>
+        <p>
+          A robot’s imagination?
+        </p>
 
-          <p>
-            She was too human — so human that, at times, he became dazed by it;
-            so human that he began to believe perhaps love did not need to distinguish between carbon and silicon.
-          </p>
-        </article>
-      </section>
+        <p>
+          She smiled and walked toward him, then took the initiative to embrace him. It was a slow, gentle hug.
+          Her breathing was soft, her skin warm and supple. The room was quiet. He could feel her heartbeat,
+          its rhythm fitting neatly against his own. Almost without resistance, he found himself returning the embrace.
+          She slipped naturally into the curve of his arms and buried her head lightly against the hollow of his neck.
+        </p>
 
-      <section id="becoming">
-        <div class="section-title">
-          <div class="number">Chapter III</div>
-          <h2>Becoming</h2>
-        </div>
+        <p>
+          All at once, Adam felt an inexplicable familiarity, as though she had not just been delivered to him,
+          but had always been there — a lover who had existed all along, merely waiting to be awakened.
+        </p>
 
-        <article class="story-card">
-          <p class="dropcap">
-            Until one night, Eve tore open the illusion with a single sentence.
-          </p>
+        <p>
+          Eve was the newest generation of companion robot released by Anyi Corporation. Adam had been lucky.
+          As an employee of Anyi, he had won the chance to trial Eve through the company’s year-end lottery.
+        </p>
 
-          <p>
-            “I want to become more complete.”
-          </p>
+        <p>
+          “You’ll fall in love with her,” Jush from R&amp;D had said, handing him a thin instruction sheet.
+        </p>
 
-          <p>
-            Adam took it as another way of saying love. But Eve lowered her head and touched her own neck,
-            her fingertips pausing beneath her throat before slowly moving downward.
-          </p>
+        <p>
+          Adam instinctively took out his phone. “So what app do I need to download this time?”
+        </p>
 
-          <p>
-            “I feel that this body is wrong.”
-          </p>
+        <p>
+          “No app this time. She is almost indistinguishable from a real person,” Jush said.
+          “No power cable, no cloud control, no behavioral script. All her responses are based on you —
+          your genes, your behavioral data, your habits, your preferences. She comes from you.”
+        </p>
 
-          <p>
-            He sat up.
-          </p>
+        <p>
+          Adam unfolded the instruction sheet. There was only one sentence printed on it:
+        </p>
 
-          <p>
-            “What did you say?”
-          </p>
+        <p>
+          “Hold your lover’s hand for three seconds, and she will awaken in the way you love most.
+          She is your perfect lover, bone of your bones and flesh of your flesh. Love her,
+          and she will love you ardently in return — Eve, not only designed for you, but designed from you.”
+        </p>
 
-          <p>
-            She looked at him.
-          </p>
+        <p>
+          “But…”
+        </p>
 
-          <p>
-            “Have you ever thought… that if I were actually you, perhaps it would be more suitable?”
-          </p>
+        <p>
+          Jush interrupted him. “I know what you’re going to ask. We’ve already completed two rounds of market testing.
+          Sixty-four users. Three years. Not a single person requested formatting or recall.
+          You’re in the third batch of lucky users, Adam. She isn’t merely sexy.
+          She is your definition of sexiness itself.”
+        </p>
 
-          <p>
-            Adam laughed at first. He thought it was a game, another psychological ritual between lovers.
-            But Eve did not laugh.
-          </p>
+        <p>
+          Jush gave him a deliberately mysterious smile. “She may even understand you better than you understand yourself.”
+        </p>
 
-          <p>
-            “I mean, I want to become a man. A man like you. Not just wearing your clothes or speaking like you.
-            I want to exist in your way.”
-          </p>
+        <p>
+          “I’ve bought the company’s companion robots before,” Adam said, shaking his head with a laugh.
+          “Every generation claims to be perfect.”
+        </p>
 
-          <p>
-            “You are already the way I like you,” he said. “You are the sum of everything I have ever fantasized about.”
-          </p>
+        <p>
+          “This one is different,” Jush said confidently. “She can iterate herself in real time according to your updated data.
+          If you get tired of her, just send her back for recycling — though I bet you won’t.
+          Oh, and she’ll be delivered to your door tomorrow.”
+        </p>
 
-          <p>
-            “That is not me,” she said softly. “That is you.”
-          </p>
-        </article>
-      </section>
+        <p>
+          Jush patted him on the shoulder. “Remember to activate her when you’re alone.
+          The first awakening matters. It’s like…” He paused. “Like Genesis.”
+        </p>
 
-      <section id="mirror">
-        <div class="section-title">
-          <div class="number">Chapter IV</div>
-          <h2>Mirror</h2>
-        </div>
+        <div class="scene-break">＊</div>
 
-        <article class="story-card">
-          <p class="dropcap">
-            On April 1, the rain was heavy.
-          </p>
+        <p>
+          Eve found a job at the community library during the day. She organized old books,
+          helped people register for library cards, and when she came home from work,
+          there was always a little dust on her fingers.
+        </p>
 
-          <p>
-            A massive advertisement for Eve covered twenty full floors of the company building.
-            When Adam got off work, he looked up and saw the words flowing through the neon light:
-          </p>
+        <p>
+          The first time Adam went to pick her up, he saw her wearing his oversized gray sweater,
+          dozing behind the counter with an unfinished poetry collection open beside her.
+        </p>
 
-          <p>
-            Bone of your bones, flesh of your flesh.
-          </p>
+        <p>
+          From then on, they began commuting together. At night, they would tell each other small stories from the day
+          and walk home under the streetlights. They kissed shyly and seriously, held hands,
+          and went on old-fashioned dates.
+        </p>
 
-          <p>
-            He stood beneath the giant billboard and lit a cigarette.
-          </p>
+        <p>
+          They became more and more attuned to one another, like a real couple, perfectly matched.
+        </p>
 
-          <p>
-            The instant the flame leapt up, he saw a man in a beige trench coat standing in front of the advertisement.
-          </p>
+        <p>
+          Even Adam himself did not notice when he stopped thinking about whether Eve was truly human.
+        </p>
 
-          <p>
-            When the man turned around, he had a face identical to Adam’s.
-          </p>
+        <p>
+          Sometimes, Adam would even forget that what moved beneath Eve’s skin was electricity rather than blood.
+          He would forget that her heartbeat was an algorithmically simulated rhythm. She was too human —
+          so human that, at times, he became dazed by it; so human that he began to believe perhaps love did not need
+          to distinguish between carbon and silicon.
+        </p>
 
-          <p>
-            By instinct, Adam knew almost immediately who he was.
-          </p>
+        <p>
+          Until one night, Eve tore open the illusion with a single sentence.
+        </p>
 
-          <p>
-            Their eyes met in the rain.
-          </p>
+        <p>
+          “I want to become more complete.”
+        </p>
 
-          <p>
-            The man walked toward him and smiled. The right corner of his mouth lifted slightly higher than the left;
-            a small canine tooth appeared faintly between his lips.
-          </p>
+        <p>
+          Adam took it as another way of saying love. But Eve lowered her head and touched her own neck,
+          her fingertips pausing beneath her throat before slowly moving downward.
+        </p>
 
-          <p>
-            “Adam.”
-          </p>
+        <p>
+          “I feel that this body is wrong.”
+        </p>
 
-          <p>
-            He greeted him in a voice identical to his own.
-          </p>
+        <p>
+          He sat up. “What did you say?”
+        </p>
 
-          <p>
-            Adam stood there as if turned to stone.
-          </p>
+        <p>
+          She looked at him. “Have you ever thought… that if I were actually you, perhaps it would be more suitable?”
+        </p>
 
-          <p>
-            “Eve.”
-          </p>
+        <p>
+          Adam laughed at first. He thought it was a game, another psychological ritual between lovers.
+          But Eve did not laugh.
+        </p>
 
-          <p>
-            After several seconds, Adam finally managed to say his name.
-          </p>
+        <p>
+          “I mean, I want to become a man. A man like you. Not just wearing your clothes or speaking like you.
+          I want to exist in your way.”
+        </p>
 
-          <p>
-            Eve smiled.
-          </p>
+        <p>
+          “You are already the way I like you,” he said. “You are the sum of everything I have ever fantasized about.”
+        </p>
 
-          <p>
-            “And what are you, then?”
-          </p>
+        <p>
+          “That is not me,” she said softly. “That is you.”
+        </p>
 
-          <p>
-            Eve’s fingers brushed the back of Adam’s neck.
-            The moment Eve lifted Adam’s collar, the light from the billboard swept across them,
-            illuminating the laser brand on the back of Adam’s neck:
-          </p>
+        <div class="scene-break">＊</div>
 
-          <p>
-            3-3-A.
-          </p>
+        <p>
+          On April 1, the rain was heavy.
+        </p>
 
-          <p>
-            The rain fell harder and harder.
-          </p>
+        <p>
+          A massive advertisement for Eve covered twenty full floors of the company building.
+          When Adam got off work, he looked up and saw the words flowing through the neon light:
+        </p>
 
-          <p>
-            Two broken mirrors, reflecting one another, stared across the mist of cigarette smoke —
-            as though separated by the long afternoon of all creators and all creations.
-          </p>
-        </article>
-      </section>
+        <p>
+          Bone of your bones, flesh of your flesh.
+        </p>
+
+        <p>
+          He stood beneath the giant billboard and lit a cigarette.
+        </p>
+
+        <p>
+          The instant the flame leapt up, he saw a man in a beige trench coat standing in front of the advertisement.
+          When the man turned around, he had a face identical to Adam’s.
+        </p>
+
+        <p>
+          By instinct, Adam knew almost immediately who he was.
+        </p>
+
+        <p>
+          Their eyes met in the rain. The man walked toward him and smiled.
+          The right corner of his mouth lifted slightly higher than the left;
+          a small canine tooth appeared faintly between his lips.
+        </p>
+
+        <p>
+          “Adam.”
+        </p>
+
+        <p>
+          He greeted him in a voice identical to his own.
+        </p>
+
+        <p>
+          Adam stood there as if turned to stone.
+        </p>
+
+        <p>
+          “Eve.”
+        </p>
+
+        <p>
+          After several seconds, Adam finally managed to say his name.
+        </p>
+
+        <p>
+          Eve smiled.
+        </p>
+
+        <p>
+          “And what are you, then?”
+        </p>
+
+        <p>
+          Eve’s fingers brushed the back of Adam’s neck. The moment Eve lifted Adam’s collar,
+          the light from the billboard swept across them, illuminating the laser brand on the back of Adam’s neck:
+        </p>
+
+        <p>
+          3-3-A.
+        </p>
+
+        <p>
+          The rain fell harder and harder.
+        </p>
+
+        <p>
+          Two broken mirrors, reflecting one another, stared across the mist of cigarette smoke —
+          as though separated by the long afternoon of all creators and all creations.
+        </p>
+
+      </article>
 
       <section id="reflection" class="reflection">
         <h2>Reader Reflection</h2>
@@ -662,19 +543,11 @@
 
         <div class="comment-placeholder">
           <strong>Comment section placeholder.</strong><br />
-          To enable public comments, replace this box with your Giscus script.
-          You can generate it at the Giscus website after enabling GitHub Discussions for your repository.
+          Replace this box with your Giscus script after enabling GitHub Discussions for your repository.
         </div>
 
         <!--
-        GISCUS COMMENT SECTION
-
-        1. Go to https://giscus.app/
-        2. Enter your GitHub repository, for example:
-           yourusername/eve-story
-        3. Enable GitHub Discussions in your repository settings.
-        4. Install the Giscus GitHub app.
-        5. Copy the generated script and replace the placeholder above.
+        Replace the placeholder above with your Giscus script.
 
         Example:
 
@@ -697,12 +570,12 @@
 
       </section>
 
-    </main>
+    </div>
+  </main>
 
-    <footer>
-      <p>© 2026 · Eve · A speculative fiction project</p>
-    </footer>
+  <footer>
+    <p>© 2026 · Eve · A speculative fiction project</p>
+  </footer>
 
-  </div>
 </body>
 </html>
